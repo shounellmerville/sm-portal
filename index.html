@@ -651,9 +651,126 @@ body[data-role="mentor"] .mentor-only { display: block; }
   user-select: none;
 }
 
-@media(max-width:600px){
-  .bod-cards, .vals-grid, .certs-grid { grid-template-columns: 1fr; }
+/* ══════════════════════════════════════
+   MOBILE — full responsive experience
+   ══════════════════════════════════════ */
+@media(max-width:768px){
+
+  /* Hide desktop OS elements on mobile */
+  #desktop { display: none !important; }
+  #win-container { display: none !important; }
+  #start-menu { display: none !important; }
+  #screensaver { display: none !important; }
+
+  /* Taskbar becomes a simple top nav bar */
+  #taskbar {
+    position: fixed; top: 0; bottom: auto;
+    height: auto; min-height: 46px;
+    flex-wrap: wrap; padding: 6px 8px; gap: 4px;
+    border-top: none;
+    border-bottom: 2px solid var(--terra);
+  }
+  .start-btn { display: none; }
+  .taskbar-sep { display: none; }
+  #tb-win-area { display: none !important; }
+  .taskbar-right { border: none; background: transparent; padding: 0; gap: 8px; }
+  .clock-display { display: none; }
+
+  /* Mobile top bar branding */
+  #mobile-brand {
+    display: flex !important;
+    align-items: center; gap: 10px; flex: 1;
+  }
+
+  /* Body padding for fixed top bar */
+  body { padding-top: 56px; padding-bottom: 20px; }
+
+  /* Mobile layout — full-page scroll */
+  #mobile-view {
+    display: block !important;
+    max-width: 100%;
+    padding: 12px 12px 40px;
+  }
+
+  /* Mobile section cards */
+  .m-section {
+    width: 100%;
+    margin-bottom: 12px;
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-dark);
+    border-bottom: 2px solid var(--bevel-dark);
+    box-shadow: 2px 2px 0 var(--btn-shadow);
+    background: var(--win-bg);
+  }
+  .m-titlebar {
+    background: var(--win-title);
+    padding: 6px 10px;
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer;
+  }
+  .m-titlebar-icon { font-size: 0.9rem; }
+  .m-titlebar-text {
+    flex: 1; font-size: 0.7rem; color: var(--cream);
+    letter-spacing: 0.05em; font-style: italic;
+  }
+  .m-chevron {
+    font-size: 0.7rem; color: rgba(253,246,238,0.7);
+    transition: transform 0.2s;
+  }
+  .m-section.collapsed .m-chevron { transform: rotate(-90deg); }
+  .m-body {
+    background: var(--cream);
+    overflow: hidden;
+    max-height: 2000px;
+    transition: max-height 0.3s ease;
+  }
+  .m-section.collapsed .m-body { max-height: 0; }
+
+  /* Mobile hero */
+  .m-hero {
+    padding: 18px 14px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .m-hero-photo {
+    width: 72px; height: 86px;
+    object-fit: cover; object-position: top;
+    border: 2px solid var(--border); flex-shrink: 0;
+  }
+  .m-hero-text { flex: 1; min-width: 0; }
+  .m-hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-style: italic;
+    color: var(--mocha); line-height: 1.1; margin-bottom: 4px;
+  }
+  .m-hero-name span { color: var(--terra); }
+  .m-hero-role { font-size: 0.62rem; color: var(--text-soft); line-height: 1.8; }
+
+  /* Grid fixes */
+  .bod-cards { grid-template-columns: 1fr !important; }
+  .vals-grid { grid-template-columns: 1fr !important; }
+  .certs-grid { grid-template-columns: 1fr !important; }
+
+  /* Coaching on mobile */
+  .coaching-sec { padding: 10px 12px; }
+  .thread-compose { flex-direction: column; }
+  .thread-send-btn { width: 100%; }
+
+  /* Login gate on mobile */
+  .gate-win { width: 94vw !important; }
+  .gate-body { padding: 18px 16px 16px; }
+  .gate-logo { font-size: 1.6rem; }
+
+  /* Mobile reads */
+  .m-reads-current { flex-direction: column !important; }
+
+  /* Goal rows on mobile */
+  .goal-row { flex-direction: row; }
 }
+
+/* Hide mobile view on desktop */
+#mobile-view { display: none; }
+#mobile-brand { display: none; }
 </style>
 </head>
 <body>
@@ -1002,6 +1119,171 @@ body[data-role="mentor"] .mentor-only { display: block; }
 
 </div><!-- end win-container -->
 
+<!-- ══ MOBILE VIEW ══ -->
+<div id="mobile-view">
+
+  <!-- Profile -->
+  <div class="m-section" id="ms-profile">
+    <div class="m-titlebar" onclick="toggleMSection('ms-profile')">
+      <span class="m-titlebar-icon">🖥️</span>
+      <span class="m-titlebar-text">profile.exe — Shounell Merville</span>
+      <span class="m-chevron">▼</span>
+    </div>
+    <div class="m-body">
+      <div class="m-hero" id="m-hero-body">
+        <!-- filled by renderMobileHero() -->
+      </div>
+      <div style="padding:0 14px 14px;">
+        <div id="m-stats-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Board -->
+  <div class="m-section collapsed" id="ms-board">
+    <div class="m-titlebar" onclick="toggleMSection('ms-board')">
+      <span class="m-titlebar-icon">📋</span>
+      <span class="m-titlebar-text">board_of_directors.dat</span>
+      <span class="m-chevron">▼</span>
+    </div>
+    <div class="m-body"><div id="m-board-body"></div></div>
+  </div>
+
+  <!-- Milestones -->
+  <div class="m-section collapsed" id="ms-milestones">
+    <div class="m-titlebar" onclick="toggleMSection('ms-milestones')">
+      <span class="m-titlebar-icon">🏆</span>
+      <span class="m-titlebar-text">milestones.log</span>
+      <span class="m-chevron">▼</span>
+    </div>
+    <div class="m-body"><div id="m-milestones-body"></div></div>
+  </div>
+
+  <!-- Skills -->
+  <div class="m-section collapsed" id="ms-skills">
+    <div class="m-titlebar" onclick="toggleMSection('ms-skills')">
+      <span class="m-titlebar-icon">⚡</span>
+      <span class="m-titlebar-text">skills.sys</span>
+      <span class="m-chevron">▼</span>
+    </div>
+    <div class="m-body">
+      <div id="m-skills-body"></div>
+      <div id="m-certs-body"></div>
+    </div>
+  </div>
+
+  <!-- Goals -->
+  <div class="m-section collapsed" id="ms-goals">
+    <div class="m-titlebar" onclick="toggleMSection('ms-goals')">
+      <span class="m-titlebar-icon">🎯</span>
+      <span class="m-titlebar-text">goals_2026.ini</span>
+      <span class="m-chevron">▼</span>
+    </div>
+    <div class="m-body"><div id="m-goals-body"></div></div>
+  </div>
+
+  <!-- Vision -->
+  <div class="m-section collapsed" id="ms-vision">
+    <div class="m-titlebar" onclick="toggleMSection('ms-vision')">
+      <span class="m-titlebar-icon">✨</span>
+      <span class="m-titlebar-text">vision.txt</span>
+      <span class="m-chevron">▼</span>
+    </div>
+    <div class="m-body">
+      <div style="padding:16px 14px;">
+        <div class="vision-stmt" id="m-vision-stmt"></div>
+        <div style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-soft);font-weight:700;margin:12px 0 8px;">Core Values</div>
+        <div class="vals-grid" id="m-vals-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Projects -->
+  <div class="m-section collapsed" id="ms-projects">
+    <div class="m-titlebar" onclick="toggleMSection('ms-projects')">
+      <span class="m-titlebar-icon">🚀</span>
+      <span class="m-titlebar-text">projects.dir</span>
+      <span class="m-chevron">▼</span>
+    </div>
+    <div class="m-body"><div id="m-projects-body"></div></div>
+  </div>
+
+  <!-- Coaching -->
+  <div class="m-section collapsed" id="ms-coaching">
+    <div class="m-titlebar" onclick="toggleMSection('ms-coaching')">
+      <span class="m-titlebar-icon">💬</span>
+      <span class="m-titlebar-text">coaching_hub.workspace</span>
+      <span class="m-chevron">▼</span>
+    </div>
+    <div class="m-body"><div id="m-coaching-body"><div style="padding:14px;font-size:0.68rem;color:var(--text-soft);">Loading...</div></div></div>
+  </div>
+
+  <!-- Current Reads -->
+  <div class="m-section collapsed" id="ms-reads">
+    <div class="m-titlebar" onclick="toggleMSection('ms-reads')">
+      <span class="m-titlebar-icon">📚</span>
+      <span class="m-titlebar-text">current_reads.shelf</span>
+      <span class="m-chevron">▼</span>
+    </div>
+    <div class="m-body">
+      <div style="padding:14px;">
+        <div style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-soft);margin-bottom:12px;font-weight:700;">📚 Currently Reading</div>
+        <div style="display:flex;gap:12px;padding:14px;background:var(--win-bg);border:1px solid var(--border);margin-bottom:14px;align-items:flex-start;">
+          <div style="width:60px;height:88px;background:linear-gradient(135deg,#c97b5a,#8b4f32);display:flex;align-items:center;justify-content:center;flex-shrink:0;writing-mode:vertical-rl;font-size:0.44rem;color:var(--cream);letter-spacing:0.06em;text-align:center;padding:4px;">UNEQUAL CHILDHOODS</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--mocha);margin-bottom:2px;">Unequal Childhoods</div>
+            <div style="font-size:0.6rem;color:var(--terra);margin-bottom:6px;letter-spacing:0.06em;">Annette Lareau · 2003</div>
+            <div style="font-size:0.62rem;color:var(--text-soft);line-height:1.65;margin-bottom:8px;">Class, race, and family life — deeply relevant to understanding opportunity and mobility.</div>
+            <div style="display:flex;gap:5px;flex-wrap:wrap;">
+              <span style="font-size:0.54rem;padding:2px 8px;background:var(--terra);color:var(--cream);">▶ Reading</span>
+              <a href="https://www.audible.com/search?keywords=unequal+childhoods" target="_blank" style="font-size:0.54rem;padding:2px 8px;background:var(--blush);border:1px solid var(--border);color:var(--text);text-decoration:none;">🎧 Audible</a>
+              <a href="https://www.amazon.com/s?k=unequal+childhoods" target="_blank" style="font-size:0.54rem;padding:2px 8px;background:var(--blush);border:1px solid var(--border);color:var(--text);text-decoration:none;">📖 Amazon</a>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-soft);margin-bottom:8px;font-weight:700;">📖 Also Read</div>
+        <div style="display:flex;gap:10px;padding:10px;background:var(--cream);border:1px solid var(--border);">
+          <div style="width:44px;height:64px;background:linear-gradient(135deg,#4a2e1e,#c97b5a);display:flex;align-items:center;justify-content:center;flex-shrink:0;writing-mode:vertical-rl;font-size:0.38rem;color:var(--cream);padding:3px;">ATOMIC HABITS</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:0.88rem;font-style:italic;color:var(--mocha);margin-bottom:2px;">Atomic Habits</div>
+            <div style="font-size:0.58rem;color:var(--terra);margin-bottom:4px;">James Clear · 2018</div>
+            <div style="display:flex;gap:5px;">
+              <span style="font-size:0.52rem;padding:2px 7px;background:#b4c9b1;color:#3a5a38;">✓ Read</span>
+              <a href="https://www.audible.com/search?keywords=atomic+habits" target="_blank" style="font-size:0.52rem;padding:2px 7px;background:var(--blush);border:1px solid var(--border);color:var(--text);text-decoration:none;">🎧 Audible</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LinkedIn + YouTube -->
+  <div class="m-section collapsed" id="ms-connect">
+    <div class="m-titlebar" onclick="toggleMSection('ms-connect')">
+      <span class="m-titlebar-icon">🔗</span>
+      <span class="m-titlebar-text">connect.lnk</span>
+      <span class="m-chevron">▼</span>
+    </div>
+    <div class="m-body">
+      <div style="padding:14px;display:flex;flex-direction:column;gap:10px;">
+        <a href="https://www.linkedin.com/in/shounell-merville" target="_blank" style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--win-bg);border:1px solid var(--border);text-decoration:none;color:var(--text);">
+          <span style="font-size:1.6rem;">💼</span>
+          <div><div style="font-size:0.68rem;font-weight:700;color:var(--mocha);margin-bottom:2px;">LinkedIn Profile</div><div style="font-size:0.6rem;color:var(--terra);">linkedin.com/in/shounell-merville ↗</div></div>
+        </a>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--win-bg);border:1px solid var(--border);">
+          <span style="font-size:1.6rem;">🎥</span>
+          <div><div style="font-size:0.68rem;font-weight:700;color:var(--mocha);margin-bottom:2px;">Book Review Channel</div><div style="font-size:0.6rem;color:var(--text-soft);">YouTube · Launching 2026</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:16px;font-size:0.58rem;color:rgba(253,246,238,0.5);letter-spacing:0.08em;">
+    © 2026 Shounell Merville · sm-portal
+  </div>
+
+</div><!-- end mobile-view -->
+
 <!-- START MENU -->
 <div id="start-menu">
   <div class="sm-sidebar"><span class="sm-sidebar-text">SM Portal · 2026</span></div>
@@ -1030,6 +1312,10 @@ body[data-role="mentor"] .mentor-only { display: block; }
     <span class="start-logo">⊞</span> Start
   </button>
   <div class="taskbar-sep"></div>
+  <div id="mobile-brand">
+    <span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--cream);">Shounell <span style="color:var(--terra);">Merville</span></span>
+    <span style="font-size:0.52rem;color:rgba(253,246,238,0.4);letter-spacing:0.1em;text-transform:uppercase;">Growth Portal</span>
+  </div>
   <div id="tb-win-area" style="display:flex;gap:2px;flex:1;overflow:hidden;"></div>
   <div class="taskbar-right">
     <span class="role-chip" id="role-chip"></span>
@@ -1065,7 +1351,7 @@ function doLogin(role){
   chip.textContent=role==='owner'?'👤 Shounell':'🌿 Mentor';
   chip.className='role-chip '+(role==='owner'?'r-owner':'r-mentor');
   if(role==='mentor') document.getElementById('mentor-banner').style.display='flex';
-  initPortal(); startClock(); startRealtime(); resetSSTimer();
+  initPortal(); startClock(); startRealtime(); resetSSTimer(); initMobile();
 }
 function logout(){ sessionStorage.removeItem('sgp_role'); location.reload(); }
 
@@ -1264,6 +1550,61 @@ function dismissScreensaver(){
 ['mousemove','keydown','mousedown','touchstart','scroll'].forEach(ev =>
   document.addEventListener(ev, resetSSTimer, {passive:true})
 );
+
+// ── MOBILE ──
+function isMobile(){ return window.innerWidth <= 768; }
+
+function toggleMSection(id){
+  const sec = document.getElementById(id);
+  if(sec) sec.classList.toggle('collapsed');
+}
+
+function initMobile(){
+  if(!isMobile()) return;
+
+  // Hero
+  const heroEl = document.getElementById('m-hero-body');
+  if(heroEl){
+    const d = window._portalData;
+    const p = d ? d.profile : null;
+    if(p){
+      heroEl.innerHTML = `
+        <img class="m-hero-photo" src="${p.photo||''}" alt="SM" onerror="this.style.display='none'"/>
+        <div class="m-hero-text">
+          <div class="m-hero-name"><span>${p.firstName||'Shounell'}</span> ${p.lastName||'Merville'}</div>
+          <div class="m-hero-role">${(p.roles||['Insurance Operations · Risk & Compliance','D&O Specialist · Claims Analyst']).join('<br/>')}</div>
+        </div>`;
+    } else {
+      heroEl.innerHTML = `<div class="m-hero-text"><div class="m-hero-name"><span>Shounell</span> Merville</div><div class="m-hero-role">Insurance Operations · Risk &amp; Compliance<br/>D&amp;O Specialist · Claims Analyst · Builder</div></div>`;
+    }
+  }
+
+  // Mirror render functions to mobile IDs
+  const mirrors = [
+    ['board-body','m-board-body'],
+    ['milestones-body','m-milestones-body'],
+    ['skills-body','m-skills-body'],
+    ['certs-body','m-certs-body'],
+    ['goals-body','m-goals-body'],
+    ['projects-body','m-projects-body'],
+    ['coaching-body','m-coaching-body'],
+    ['vision-stmt','m-vision-stmt'],
+    ['vals-grid','m-vals-grid'],
+  ];
+
+  // Render all sections into desktop IDs first, then mirror HTML
+  renderBoard(); renderMilestones(); renderSkills();
+  renderGoals(); renderValues(); renderProjects();
+  renderCoaching();
+
+  requestAnimationFrame(() => {
+    mirrors.forEach(([src, dst]) => {
+      const s = document.getElementById(src);
+      const d = document.getElementById(dst);
+      if(s && d) d.innerHTML = s.innerHTML;
+    });
+  });
+}
 
 function toggleStartMenu(){
   const menu = document.getElementById('start-menu');
