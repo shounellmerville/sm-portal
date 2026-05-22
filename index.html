@@ -669,7 +669,13 @@ body[data-role="mentor"] .mentor-only { display: block; }
 
 </div><!-- end main -->
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+// ── SUPABASE ──
+const SB_URL = 'https://ebigjlecmoqvcodostuf.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViaWdqbGVjbW9xdmNvZG9zdHVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzOTcxMDksImV4cCI6MjA5NDk3MzEwOX0.0r7nUteZn0z5e4dPya_cICoLQpLR45rYzl2KhSW2-L0';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
 // ── AUTH ──
 const PW = { owner:'growth', mentor:'mentor' };
 let gRole = 'owner';
@@ -688,7 +694,7 @@ function doLogin(role){
   chip.textContent=role==='owner'?'👤 Shounell':'🌿 Mentor';
   chip.className='role-chip '+(role==='owner'?'r-owner':'r-mentor');
   if(role==='mentor') document.getElementById('mentor-banner').style.display='flex';
-  initPortal(); startClock();
+  initPortal(); startClock(); startRealtime();
 }
 function logout(){ sessionStorage.removeItem('sgp_role'); location.reload(); }
 window.addEventListener('load',()=>{ const r=sessionStorage.getItem('sgp_role'); if(r)doLogin(r); });
@@ -894,7 +900,6 @@ function renderMarquee(){
 }
 
 // ── COACHING ──
-const CKEY = 'sgp-coaching';
 let cCache = null;
 const SECS = [
   {id:'board',label:'Board of Directors',icon:'📋'},
@@ -905,23 +910,56 @@ const SECS = [
   {id:'projects',label:'Projects',icon:'🚀'}
 ];
 
+// ── SUPABASE COACHING SYNC ──
 async function gcLoad(){
   if(cCache) return;
-  try{
-    if(window.storage){const r=await window.storage.get(CKEY,true);cCache=r?JSON.parse(r.value):{};}
-    else{const v=localStorage.getItem('sgp_collab');cCache=v?JSON.parse(v):{};}
-  }catch(e){try{const v=localStorage.getItem('sgp_collab');cCache=v?JSON.parse(v):{}}catch(ee){cCache={};}}
+  try {
+    const { data, error } = await sb.from('coaching').select('id, data');
+    if(error) throw error;
+    cCache = {};
+    (data||[]).forEach(row => { cCache[row.id] = row.data; });
+  } catch(e) {
+    // fallback to localStorage if offline
+    try { const v=localStorage.getItem('sgp_collab'); cCache=v?JSON.parse(v):{}; }
+    catch(ee){ cCache={}; }
+  }
 }
 
 async function gcGet(id){ await gcLoad(); return cCache[id]||{rating:0,actions:[],thread:[]}; }
 
-async function gcSet(id,data){
-  await gcLoad(); cCache[id]=data;
-  try{
-    if(window.storage) await window.storage.set(CKEY,JSON.stringify(cCache),true);
-    else localStorage.setItem('sgp_collab',JSON.stringify(cCache));
-  }catch(e){ localStorage.setItem('sgp_collab',JSON.stringify(cCache)); }
+async function gcSet(id, data){
+  if(!cCache) cCache = {};
+  cCache[id] = data;
+  try {
+    const { error } = await sb.from('coaching').upsert(
+      { id: id, data: data, updated_at: new Date().toISOString() },
+      { onConflict: 'id' }
+    );
+    if(error) throw error;
+    document.getElementById('sync-label').textContent = '● Live';
+  } catch(e) {
+    // fallback write to localStorage
+    try { localStorage.setItem('sgp_collab', JSON.stringify(cCache)); } catch(ee){}
+    document.getElementById('sync-label').textContent = '● Offline';
+  }
   showToast();
+}
+
+// ── REALTIME SUBSCRIPTION ──
+function startRealtime(){
+  sb.channel('coaching-changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'coaching' }, payload => {
+      if(!cCache) cCache = {};
+      if(payload.new && payload.new.id){
+        cCache[payload.new.id] = payload.new.data;
+        renderCoaching();
+        showToast();
+      }
+    })
+    .subscribe(status => {
+      const lbl = document.getElementById('sync-label');
+      if(lbl) lbl.textContent = status === 'SUBSCRIBED' ? '● Live' : '● Connecting...';
+    });
 }
 
 async function renderCoaching(){
