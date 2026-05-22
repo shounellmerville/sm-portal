@@ -7,31 +7,37 @@
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg: #f0e0cc;
-  --dot: rgba(139,96,82,0.18);
-  --terra: #c97b5a;
-  --terra-dark: #8b4f32;
-  --terra-mid: #a8623e;
-  --mocha: #4a2e1e;
-  --cream: #fdf6ee;
-  --blush: #e8cfc4;
-  --gold: #c4a15a;
-  --sage: #7a9478;
-  --text: #3a2015;
-  --text-soft: #8b6052;
-  --border: #c4a090;
-  /* Win95-style bevels in terra palette */
-  --win-bg: #e8d0bc;
-  --win-title: #c97b5a;
-  --win-title-text: #fdf6ee;
-  --bevel-light: #f5e6d8;
-  --bevel-dark: #8b4f32;
-  --taskbar-bg: #3a2015;
-  --taskbar-border: #c97b5a;
-  --btn-face: #ddc4ae;
-  --btn-light: #f5e6d8;
-  --btn-dark: #8b4f32;
-  --btn-shadow: #5c3020;
+  /* ── 60-30-10 palette ──────────────────────────
+     60% cream/linen  →  backgrounds, window bodies
+     30% mocha/brown  →  titles, text, structure
+     10% terracotta   →  accents only: active states,
+                         key buttons, highlights
+  ─────────────────────────────────────────────── */
+  --bg: #f5ece2;                /* linen — body bg        (60%) */
+  --dot: rgba(139,96,82,0.10);  /* very subtle dot grid          */
+  --terra: #c97b5a;             /* terracotta accent       (10%) */
+  --terra-dark: #9e5c3a;
+  --terra-mid: #b56a48;
+  --mocha: #3d2614;             /* deep mocha — titles     (30%) */
+  --cream: #fefaf5;             /* pure cream — window bg  (60%) */
+  --blush: #f0e0d4;             /* soft blush — hover/alt  (60%) */
+  --gold: #b8904e;              /* warm gold — star accent (10%) */
+  --sage: #6b8f78;              /* sage green — mentor     (10%) */
+  --text: #2e1a0e;              /* near-black text                */
+  --text-soft: #7a5a4a;        /* muted body text                */
+  --border: #dcc8b8;            /* very soft border               */
+  /* Win95 bevels — mocha-toned, not terracotta */
+  --win-bg: #f0e8df;            /* window chrome bg        (60%) */
+  --win-title: #3d2614;         /* mocha title bar         (30%) */
+  --win-title-text: #fefaf5;    /* cream title text               */
+  --bevel-light: #f8f0e8;
+  --bevel-dark: #7a4e32;
+  --taskbar-bg: #2a1a0c;        /* very dark mocha taskbar        */
+  --taskbar-border: #9e5c3a;
+  --btn-face: #e8ddd2;
+  --btn-light: #f8f0e8;
+  --btn-dark: #7a4e32;
+  --btn-shadow: #3d2614;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -40,7 +46,7 @@ html, body { overflow-x: hidden; }
 
 body {
   font-family: 'Share Tech Mono', monospace;
-  background: linear-gradient(180deg, #d4956a 0%, #e8b88a 18%, #f5dfc0 38%, #c8a882 52%, #a8724a 65%, #8b5a32 80%, #7a9478 82%, #6a8468 100%);
+  background: linear-gradient(180deg, #c4a882 0%, #d9c4a8 20%, #ecdfd0 40%, #d4bfa8 55%, #b89478 68%, #9a7458 78%, #8a9e8a 82%, #7a8e7a 100%);
   background-attachment: fixed;
   min-height: 100vh;
   padding-bottom: 52px;
@@ -162,7 +168,7 @@ body {
   flex-shrink: 0;
   user-select: none;
 }
-.win-titlebar.inactive { background: #9a6b55; }
+.win-titlebar.inactive { background: #6b4e38; }
 .win-title-icon { font-size: 0.85rem; }
 .win-title-text {
   flex: 1; font-size: 0.7rem; color: var(--cream);
@@ -292,7 +298,7 @@ body {
 .skill-name-txt { font-size: 0.68rem; color: var(--text); }
 .skill-lbl { font-size: 0.62rem; color: var(--text-soft); }
 .skill-track { height: 4px; background: var(--blush); }
-.skill-fill { height: 100%; background: var(--terra); }
+.skill-fill { height: 100%; background: var(--mocha); }
 
 /* Goals */
 .goal-row { display: flex; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--border); align-items: flex-start; }
@@ -552,14 +558,23 @@ body[data-role="mentor"] .mentor-only { display: block; }
 .toast { position: fixed; bottom: 60px; right: 14px; background: var(--sage); color: white; padding: 6px 14px; font-size: 0.62rem; letter-spacing: 0.08em; z-index: 600; opacity: 0; transform: translateY(4px); transition: all 0.25s; pointer-events: none; }
 .toast.show { opacity: 1; transform: translateY(0); }
 
-/* Mentor banner */
-#mentor-banner {
-  width: 100%; background: var(--sage); border-bottom: 2px solid #3d6b5a;
-  padding: 8px 18px; display: none; align-items: center; gap: 14px;
-  font-size: 0.65rem; color: white; letter-spacing: 0.04em;
-  position: fixed; top: 0; left: 0; right: 0; z-index: 49;
-}
-.mentor-go-btn { padding: 3px 12px; background: white; color: var(--sage); border: none; font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; cursor: pointer; font-weight: 700; letter-spacing: 0.06em; }
+/* Mentor welcome window */
+#win-mentor-welcome .win-titlebar { background: var(--sage); }
+#win-mentor-welcome .win-titlebar.inactive { background: #4a6b58; }
+.mentor-welcome-body { padding: 28px 28px 22px; background: var(--cream); }
+.mw-greeting { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-style: italic; color: var(--mocha); margin-bottom: 6px; }
+.mw-sub { font-size: 0.62rem; color: var(--text-soft); letter-spacing: 0.08em; margin-bottom: 22px; }
+.mw-focus-box { background: var(--blush); border-left: 3px solid var(--terra); padding: 14px 16px; margin-bottom: 20px; }
+.mw-focus-label { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--terra); font-weight: 700; margin-bottom: 6px; }
+.mw-focus-text { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; color: var(--mocha); line-height: 1.6; }
+.mw-ask-label { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-soft); font-weight: 700; margin-bottom: 8px; }
+.mw-ask-text { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; color: var(--mocha); line-height: 1.6; margin-bottom: 14px; }
+.mw-reply-inp { width: 100%; padding: 10px 12px; border: 1px solid var(--border); background: var(--win-bg); font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: var(--text); outline: none; resize: none; min-height: 70px; transition: border-color 0.15s; }
+.mw-reply-inp:focus { border-color: var(--sage); }
+.mw-send-btn { margin-top: 8px; padding: 8px 20px; background: var(--sage); color: var(--cream); border: none; font-family: 'Share Tech Mono', monospace; font-size: 0.64rem; cursor: pointer; font-weight: 700; letter-spacing: 0.06em; border-top: 2px solid #9abfad; border-left: 2px solid #9abfad; border-right: 2px solid #4a6b58; border-bottom: 2px solid #4a6b58; }
+.mw-divider { height: 1px; background: var(--border); margin: 20px 0; }
+.mw-footer { font-size: 0.62rem; color: var(--text-soft); line-height: 1.7; }
+.mw-portal-btn { display: inline-block; margin-top: 10px; padding: 6px 16px; background: var(--win-bg); color: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; cursor: pointer; letter-spacing: 0.05em; border-top: 2px solid var(--btn-light); border-left: 2px solid var(--btn-light); border-right: 2px solid var(--btn-dark); border-bottom: 2px solid var(--btn-dark); }
 
 /* ── DESKTOP ── */
 #desktop {
@@ -867,10 +882,38 @@ body[data-role="mentor"] .mentor-only { display: block; }
 <!-- MAIN -->
 <div id="main" style="display:none;">
 
-<!-- MENTOR BANNER -->
-<div id="mentor-banner">
-  <span>🌿 Welcome, Mentor — Shounell's portal is ready for your review</span>
-  <button class="mentor-go-btn" onclick="openWin('win-coaching')">Open Coaching Hub →</button>
+<!-- MENTOR WELCOME WINDOW (opens on mentor login) -->
+<div class="win-frame" id="win-mentor-welcome" style="display:none; position:absolute; left:50%; top:60px; transform:translateX(-50%); width:480px; max-width:94vw; z-index:200;">
+  <div class="win-titlebar" onmousedown="startDrag(event,'win-mentor-welcome')">
+    <span class="win-title-icon">🌿</span>
+    <span class="win-title-text">welcome.txt — A note from Shounell</span>
+    <div class="win-controls">
+      <button class="wc-btn" onclick="minimizeWin('win-mentor-welcome')">_</button>
+      <button class="wc-btn" onclick="closeWin('win-mentor-welcome')">×</button>
+    </div>
+  </div>
+  <div class="mentor-welcome-body win-body">
+    <div class="mw-greeting">Hi — thank you for being here. 🤎</div>
+    <div class="mw-sub">This note takes less than 2 minutes to read.</div>
+
+    <div class="mw-focus-box">
+      <div class="mw-focus-label">My current focus</div>
+      <div class="mw-focus-text">"Positioning myself for a promotion to Broker Placement Specialist by July 2026 — anchored in placement independence, market knowledge, and the relationships I'm intentionally building."</div>
+    </div>
+
+    <div class="mw-ask-label">One question for you</div>
+    <div class="mw-ask-text">Based on what you know of me — what's the one thing you think I should be doing differently right now to accelerate where I'm trying to go?</div>
+    <textarea class="mw-reply-inp" id="mentor-quick-reply" placeholder="Your thoughts (no pressure to be long)..."></textarea>
+    <button class="mw-send-btn" onclick="sendMentorQuickReply()">Send →</button>
+    <div id="mw-sent-msg" style="display:none;font-size:0.62rem;color:var(--sage);margin-top:8px;letter-spacing:0.06em;">✓ Sent — thank you so much.</div>
+
+    <div class="mw-divider"></div>
+    <div class="mw-footer">
+      If you have a few extra minutes, you're welcome to explore the full portal below — but please don't feel obligated. Your quick reply above means everything.
+      <br/><br/>
+      <button class="mw-portal-btn" onclick="closeWin('win-mentor-welcome');openWin('win-coaching')">Open coaching notes →</button>
+    </div>
+  </div>
 </div>
 
 <!-- WINDOW CONTAINER -->
@@ -1350,7 +1393,12 @@ function doLogin(role){
   const chip=document.getElementById('role-chip');
   chip.textContent=role==='owner'?'👤 Shounell':'🌿 Mentor';
   chip.className='role-chip '+(role==='owner'?'r-owner':'r-mentor');
-  if(role==='mentor') document.getElementById('mentor-banner').style.display='flex';
+  if(role==='mentor'){
+    setTimeout(()=>{
+      const w = document.getElementById('win-mentor-welcome');
+      if(w){ w.style.display='flex'; w.style.zIndex=++topZ; updateTaskbar(); }
+    }, 400);
+  }
   initPortal(); startClock(); startRealtime(); resetSSTimer(); initMobile();
 }
 function logout(){ sessionStorage.removeItem('sgp_role'); location.reload(); }
@@ -1367,7 +1415,8 @@ const winMeta = {
   'win-projects':   { label: '🚀 projects.dir',     icon: '🚀' },
   'win-coaching':   { label: '💬 coaching',         icon: '💬' },
   'win-reads':      { label: '📚 Current Reads',    icon: '📚' },
-  'win-youtube':    { label: '🎥 Book Reviews',     icon: '🎥' },
+  'win-youtube':          { label: '🎥 Book Reviews',        icon: '🎥' },
+  'win-mentor-welcome':   { label: '🌿 Welcome Note',        icon: '🌿' },
 };
 
 function openWin(id) {
@@ -1604,6 +1653,25 @@ function initMobile(){
       if(s && d) d.innerHTML = s.innerHTML;
     });
   });
+}
+
+// ── MENTOR QUICK REPLY ──
+async function sendMentorQuickReply(){
+  const inp = document.getElementById('mentor-quick-reply');
+  const t = inp ? inp.value.trim() : '';
+  if(!t) return;
+  // Save as a thread message in the 'goals' coaching section
+  const d = await gcGet('goals');
+  d.thread = d.thread || [];
+  d.thread.push({
+    role: 'mentor',
+    text: '💡 <em>Quick reply:</em> ' + t,
+    time: new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})
+  });
+  await gcSet('goals', d);
+  if(inp) inp.value = '';
+  const sent = document.getElementById('mw-sent-msg');
+  if(sent) sent.style.display = 'block';
 }
 
 function toggleStartMenu(){
