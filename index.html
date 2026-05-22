@@ -445,6 +445,51 @@ body[data-role="mentor"] .mentor-only { display: block; }
 .logout-tb { padding: 2px 7px; border-top: 1px solid var(--btn-light); border-left: 1px solid var(--btn-light); border-right: 1px solid var(--btn-dark); border-bottom: 1px solid var(--btn-dark); background: var(--btn-face); color: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 0.56rem; cursor: pointer; letter-spacing: 0.04em; }
 .clock-display { font-size: 0.64rem; color: var(--cream); min-width: 52px; text-align: right; font-weight: 700; }
 
+/* ── START MENU ── */
+#start-menu {
+  display: none;
+  position: fixed;
+  bottom: 50px;
+  left: 4px;
+  width: 220px;
+  z-index: 9998;
+  border-top: 2px solid var(--bevel-light);
+  border-left: 2px solid var(--bevel-light);
+  border-right: 2px solid var(--bevel-dark);
+  border-bottom: 2px solid var(--bevel-dark);
+  box-shadow: 3px 3px 0 var(--btn-shadow);
+  background: var(--btn-face);
+}
+#start-menu.open { display: flex; }
+.sm-sidebar {
+  width: 28px;
+  background: linear-gradient(180deg, var(--terra-dark) 0%, var(--mocha) 100%);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 8px; flex-shrink: 0;
+}
+.sm-sidebar-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem; font-style: italic; font-weight: 600;
+  color: rgba(253,246,238,0.5); letter-spacing: 0.12em;
+  writing-mode: vertical-rl; text-orientation: mixed;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+.sm-items { flex: 1; padding: 4px 0; }
+.sm-divider { height: 1px; background: var(--btn-dark); margin: 3px 0; box-shadow: 0 1px 0 var(--btn-light); }
+.sm-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 10px 5px 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem; color: var(--text); cursor: pointer;
+  letter-spacing: 0.03em; user-select: none;
+}
+.sm-item:hover { background: var(--terra); color: var(--cream); }
+.sm-item-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+.sm-item-label { flex: 1; }
+.sm-item-arrow { font-size: 0.55rem; color: var(--text-soft); }
+.sm-item:hover .sm-item-arrow { color: var(--cream); }
+
 /* GATE */
 #gate {
   position: fixed; inset: 0; z-index: 9999;
@@ -957,6 +1002,28 @@ body[data-role="mentor"] .mentor-only { display: block; }
 
 </div><!-- end win-container -->
 
+<!-- START MENU -->
+<div id="start-menu">
+  <div class="sm-sidebar"><span class="sm-sidebar-text">SM Portal · 2026</span></div>
+  <div class="sm-items">
+    <div class="sm-item" onclick="smOpen('win-profile')"><span class="sm-item-icon">🖥️</span><span class="sm-item-label">My Computer</span></div>
+    <div class="sm-item" onclick="smOpen('win-coaching')"><span class="sm-item-icon">📁</span><span class="sm-item-label">My Documents</span></div>
+    <div class="sm-divider"></div>
+    <div class="sm-item" onclick="smOpen('win-board')"><span class="sm-item-icon">📋</span><span class="sm-item-label">Board of Directors</span></div>
+    <div class="sm-item" onclick="smOpen('win-milestones')"><span class="sm-item-icon">🏆</span><span class="sm-item-label">Milestones</span></div>
+    <div class="sm-item" onclick="smOpen('win-skills')"><span class="sm-item-icon">⚡</span><span class="sm-item-label">Skills</span></div>
+    <div class="sm-item" onclick="smOpen('win-goals')"><span class="sm-item-icon">🎯</span><span class="sm-item-label">Goals 2026</span></div>
+    <div class="sm-item" onclick="smOpen('win-vision')"><span class="sm-item-icon">✨</span><span class="sm-item-label">Vision</span></div>
+    <div class="sm-item" onclick="smOpen('win-projects')"><span class="sm-item-icon">🚀</span><span class="sm-item-label">Projects</span></div>
+    <div class="sm-divider"></div>
+    <div class="sm-item" onclick="smOpen('win-reads')"><span class="sm-item-icon">📚</span><span class="sm-item-label">Current Reads</span></div>
+    <div class="sm-item" onclick="smOpen('win-youtube')"><span class="sm-item-icon">🎥</span><span class="sm-item-label">Book Reviews</span></div>
+    <div class="sm-item" onclick="window.open('https://www.linkedin.com/in/shounell-merville','_blank');toggleStartMenu()"><span class="sm-item-icon">💼</span><span class="sm-item-label">LinkedIn</span><span class="sm-item-arrow">↗</span></div>
+    <div class="sm-divider"></div>
+    <div class="sm-item" onclick="logout()"><span class="sm-item-icon">🚪</span><span class="sm-item-label">Sign Out</span></div>
+  </div>
+</div>
+
 <!-- TASKBAR -->
 <div id="taskbar">
   <button class="start-btn" onclick="toggleStartMenu()">
@@ -1198,7 +1265,22 @@ function dismissScreensaver(){
   document.addEventListener(ev, resetSSTimer, {passive:true})
 );
 
-function toggleStartMenu(){ /* reserved */ }
+function toggleStartMenu(){
+  const menu = document.getElementById('start-menu');
+  menu.classList.toggle('open');
+}
+function smOpen(id){
+  document.getElementById('start-menu').classList.remove('open');
+  openWin(id);
+}
+// Close start menu when clicking anywhere else
+document.addEventListener('mousedown', e => {
+  const menu = document.getElementById('start-menu');
+  const btn = document.querySelector('.start-btn');
+  if (menu && !menu.contains(e.target) && btn && !btn.contains(e.target)) {
+    menu.classList.remove('open');
+  }
+});
 window.addEventListener('load',()=>{ const r=sessionStorage.getItem('sgp_role'); if(r)doLogin(r); });
 
 // ── CLOCK ──
