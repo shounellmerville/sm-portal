@@ -40,9 +40,8 @@ html, body { overflow-x: hidden; }
 
 body {
   font-family: 'Share Tech Mono', monospace;
-  background-color: var(--bg);
-  background-image: radial-gradient(circle, var(--dot) 1px, transparent 1px);
-  background-size: 20px 20px;
+  background: linear-gradient(180deg, #d4956a 0%, #e8b88a 18%, #f5dfc0 38%, #c8a882 52%, #a8724a 65%, #8b5a32 80%, #7a9478 82%, #6a8468 100%);
+  background-attachment: fixed;
   min-height: 100vh;
   padding-bottom: 52px;
   color: var(--text);
@@ -348,39 +347,65 @@ body[data-role="mentor"] .mentor-only { display: block; }
 #taskbar {
   position: fixed; bottom: 0; left: 0; right: 0; height: 50px;
   background: var(--taskbar-bg);
-  border-top: 2px solid var(--taskbar-border);
-  display: flex; align-items: center; padding: 0 8px; gap: 6px; z-index: 500;
+  border-top: 2px solid var(--bevel-light);
+  display: flex; align-items: center; padding: 0 4px; gap: 4px; z-index: 500;
 }
 .start-btn {
-  background: var(--terra);
-  border-top: 2px solid var(--bevel-light);
-  border-left: 2px solid var(--bevel-light);
-  border-right: 2px solid var(--bevel-dark);
-  border-bottom: 2px solid var(--bevel-dark);
-  color: var(--cream); font-family: 'Share Tech Mono', monospace;
-  font-size: 0.72rem; font-weight: 700; padding: 4px 12px;
-  cursor: pointer; letter-spacing: 0.06em; display: flex; align-items: center; gap: 6px;
-  height: 34px;
+  background: var(--btn-face);
+  border-top: 2px solid var(--btn-light);
+  border-left: 2px solid var(--btn-light);
+  border-right: 2px solid var(--btn-dark);
+  border-bottom: 2px solid var(--btn-dark);
+  color: var(--text); font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem; font-weight: 700; padding: 4px 10px;
+  cursor: pointer; letter-spacing: 0.04em; display: flex; align-items: center; gap: 5px;
+  height: 36px; min-width: 88px;
 }
-.taskbar-sep { width: 1px; height: 32px; background: rgba(255,255,255,0.15); margin: 0 4px; }
+.start-btn:active {
+  border-top: 2px solid var(--btn-dark);
+  border-left: 2px solid var(--btn-dark);
+  border-right: 2px solid var(--btn-light);
+  border-bottom: 2px solid var(--btn-light);
+}
+.start-logo {
+  font-size: 1rem; line-height: 1;
+}
+.taskbar-sep { width: 1px; height: 36px; background: var(--btn-dark); margin: 0 2px; box-shadow: 1px 0 0 var(--btn-light); }
 .tb-nav-links { display: flex; gap: 2px; flex: 1; }
 .tb-link {
-  font-size: 0.6rem; color: rgba(255,255,255,0.55);
-  text-decoration: none; padding: 4px 10px; height: 34px;
-  display: flex; align-items: center; gap: 4px; letter-spacing: 0.04em;
-  transition: background 0.1s;
+  font-size: 0.58rem; color: var(--text);
+  text-decoration: none; padding: 3px 8px; height: 36px;
+  display: flex; align-items: center; gap: 4px; letter-spacing: 0.03em;
+  background: var(--btn-face);
+  border-top: 2px solid var(--btn-light);
+  border-left: 2px solid var(--btn-light);
+  border-right: 2px solid var(--btn-dark);
+  border-bottom: 2px solid var(--btn-dark);
+  min-width: 80px;
 }
-.tb-link:hover { background: rgba(201,123,90,0.25); color: white; }
+.tb-link:hover { background: var(--blush); }
+.tb-link.active {
+  border-top: 2px solid var(--btn-dark);
+  border-left: 2px solid var(--btn-dark);
+  border-right: 2px solid var(--btn-light);
+  border-bottom: 2px solid var(--btn-light);
+  background: var(--win-bg);
+}
 .taskbar-right {
-  display: flex; align-items: center; gap: 10px;
-  padding-left: 8px; border-left: 1px solid rgba(255,255,255,0.1);
-  font-size: 0.6rem; color: rgba(255,255,255,0.45); letter-spacing: 0.06em;
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 8px;
+  border-top: 1px solid var(--btn-dark);
+  border-left: 1px solid var(--btn-dark);
+  border-right: 1px solid var(--btn-light);
+  border-bottom: 1px solid var(--btn-light);
+  background: var(--taskbar-bg);
+  height: 36px;
 }
-.role-chip { padding: 2px 8px; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.role-chip { padding: 1px 6px; font-size: 0.56rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
 .r-owner { background: var(--terra); color: var(--cream); }
 .r-mentor { background: var(--sage); color: var(--cream); }
-.logout-tb { padding: 2px 8px; border: 1px solid rgba(255,255,255,0.2); background: none; color: rgba(255,255,255,0.4); font-family: 'Share Tech Mono', monospace; font-size: 0.58rem; cursor: pointer; letter-spacing: 0.04em; }
-.clock-display { font-size: 0.65rem; color: rgba(255,255,255,0.6); min-width: 52px; text-align: right; }
+.logout-tb { padding: 2px 7px; border-top: 1px solid var(--btn-light); border-left: 1px solid var(--btn-light); border-right: 1px solid var(--btn-dark); border-bottom: 1px solid var(--btn-dark); background: var(--btn-face); color: var(--text); font-family: 'Share Tech Mono', monospace; font-size: 0.56rem; cursor: pointer; letter-spacing: 0.04em; }
+.clock-display { font-size: 0.64rem; color: var(--cream); min-width: 52px; text-align: right; font-weight: 700; }
 
 /* GATE */
 #gate {
@@ -475,9 +500,140 @@ body[data-role="mentor"] .mentor-only { display: block; }
   .bod-cards, .vals-grid, .certs-grid { grid-template-columns: 1fr; }
   .tb-nav-links { display: none; }
 }
+/* ── DESKTOP ── */
+#desktop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 50px;
+  z-index: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 6px;
+  pointer-events: none;
+}
+.desk-icon {
+  width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px;
+  border: 1px solid transparent;
+  pointer-events: all;
+  user-select: none;
+}
+.desk-icon:hover {
+  background: rgba(201,123,90,0.18);
+  border-color: rgba(201,123,90,0.4);
+}
+.desk-icon:active, .desk-icon.selected {
+  background: rgba(201,123,90,0.3);
+  border-color: var(--terra);
+}
+.desk-icon-img {
+  font-size: 2.2rem;
+  line-height: 1;
+  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+}
+.desk-icon-label {
+  font-size: 0.58rem;
+  color: white;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8), -1px -1px 2px rgba(0,0,0,0.8);
+  letter-spacing: 0.03em;
+  line-height: 1.3;
+  word-break: break-word;
+  max-width: 68px;
+}
+
+/* ── SCREENSAVER ── */
+#screensaver {
+  display: none;
+  position: fixed; inset: 0; z-index: 99999;
+  background: #000;
+  cursor: none;
+  overflow: hidden;
+}
+#screensaver.active { display: block; }
+.ss-ball {
+  position: absolute;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 3rem;
+  color: var(--terra);
+  text-shadow: 0 0 20px rgba(201,123,90,0.8), 0 0 40px rgba(201,123,90,0.4);
+  user-select: none;
+  pointer-events: none;
+  line-height: 1;
+}
+.ss-tagline {
+  position: absolute;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(201,123,90,0.5);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  user-select: none;
+  pointer-events: none;
+}
+.ss-hint {
+  position: fixed;
+  bottom: 24px; left: 0; right: 0;
+  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.1em;
+  user-select: none;
+}
+
 </style>
 </head>
 <body>
+
+<!-- SCREENSAVER -->
+<div id="screensaver" onclick="dismissScreensaver()" onmousemove="dismissScreensaver()">
+  <div class="ss-hint">Click or move mouse to return</div>
+</div>
+
+<!-- DESKTOP ICONS -->
+<div id="desktop">
+  <div class="desk-icon" ondblclick="scrollToSection('hero-win')" title="My Computer">
+    <div class="desk-icon-img">🖥️</div>
+    <div class="desk-icon-label">My Computer</div>
+  </div>
+  <div class="desk-icon" ondblclick="scrollToSection('coaching-win')" title="My Documents">
+    <div class="desk-icon-img">📁</div>
+    <div class="desk-icon-label">My Documents</div>
+  </div>
+  <div class="desk-icon" ondblclick="scrollToSection('board-win')" title="Board of Directors">
+    <div class="desk-icon-img">📋</div>
+    <div class="desk-icon-label">Board of Directors</div>
+  </div>
+  <div class="desk-icon" ondblclick="scrollToSection('goals-win')" title="Goals 2026">
+    <div class="desk-icon-img">🎯</div>
+    <div class="desk-icon-label">Goals 2026</div>
+  </div>
+  <div class="desk-icon" ondblclick="scrollToSection('skills-win')" title="Skills">
+    <div class="desk-icon-img">⚡</div>
+    <div class="desk-icon-label">skills.sys</div>
+  </div>
+  <div class="desk-icon" ondblclick="scrollToSection('vision-win')" title="Vision">
+    <div class="desk-icon-img">✨</div>
+    <div class="desk-icon-label">vision.txt</div>
+  </div>
+  <div class="desk-icon" ondblclick="scrollToSection('projects-win')" title="Projects">
+    <div class="desk-icon-img">🚀</div>
+    <div class="desk-icon-label">projects.dir</div>
+  </div>
+  <div class="desk-icon" title="Recycle Bin">
+    <div class="desk-icon-img">🗑️</div>
+    <div class="desk-icon-label">Recycle Bin</div>
+  </div>
+</div>
 
 <div class="toast" id="toast">✓ Saved</div>
 
@@ -670,7 +826,7 @@ body[data-role="mentor"] .mentor-only { display: block; }
     <div class="window-body readme-body">
       © 2026 SHOUNELL MERVILLE — ALL RIGHTS RESERVED<br>
       built with intention + momentum.<br><br>
-      <span style="color:var(--terra);">Passwords:</span> Owner → <strong>growth</strong> &nbsp;·&nbsp; Mentor → <strong>mentor</strong>
+      <span style="color:var(--terra);">Access:</span> Private portal — contact Shounell for credentials.
     </div>
   </div>
 
@@ -678,7 +834,9 @@ body[data-role="mentor"] .mentor-only { display: block; }
 
 <!-- TASKBAR -->
 <div id="taskbar">
-  <button class="start-btn">⊞ SM Portal</button>
+  <button class="start-btn" onclick="toggleStartMenu()">
+    <span class="start-logo">⊞</span> Start
+  </button>
   <div class="taskbar-sep"></div>
   <div class="tb-nav-links">
     <a class="tb-link" href="#hero-win">👤 profile.exe</a>
@@ -687,7 +845,7 @@ body[data-role="mentor"] .mentor-only { display: block; }
     <a class="tb-link" href="#skills-win">⚡ skills.sys</a>
     <a class="tb-link" href="#goals-win">🎯 goals.ini</a>
     <a class="tb-link" href="#vision-win">✨ vision.txt</a>
-    <a class="tb-link" href="#coaching-win">💬 coaching.workspace</a>
+    <a class="tb-link" href="#coaching-win">💬 coaching</a>
   </div>
   <div class="taskbar-right">
     <span class="role-chip" id="role-chip"></span>
@@ -723,9 +881,95 @@ function doLogin(role){
   chip.textContent=role==='owner'?'👤 Shounell':'🌿 Mentor';
   chip.className='role-chip '+(role==='owner'?'r-owner':'r-mentor');
   if(role==='mentor') document.getElementById('mentor-banner').style.display='flex';
-  initPortal(); startClock(); startRealtime();
+  initPortal(); startClock(); startRealtime(); resetSSTimer();
 }
 function logout(){ sessionStorage.removeItem('sgp_role'); location.reload(); }
+
+// ── SCROLL TO SECTION ──
+function scrollToSection(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── SCREENSAVER ──
+let ssTimer = null;
+const SS_DELAY = 5 * 60 * 1000; // 5 minutes
+let ssBalls = [];
+
+function resetSSTimer(){
+  clearTimeout(ssTimer);
+  ssTimer = setTimeout(launchScreensaver, SS_DELAY);
+}
+
+function launchScreensaver(){
+  const ss = document.getElementById('screensaver');
+  ss.classList.add('active');
+  // Clear previous balls
+  ss.querySelectorAll('.ss-ball,.ss-tagline').forEach(el=>el.remove());
+  ssBalls = [];
+
+  // Create bouncing SM balls
+  const labels = ['SM','Shounell','✦','SM','growth','✦'];
+  labels.forEach((txt, i) => {
+    const el = document.createElement('div');
+    el.className = 'ss-ball';
+    el.textContent = txt;
+    const hue = i % 2 === 0 ? 'var(--terra)' : 'var(--gold)';
+    el.style.color = hue;
+    el.style.textShadow = `0 0 20px rgba(201,123,90,0.9), 0 0 40px rgba(201,123,90,0.4)`;
+    ss.appendChild(el);
+    ssBalls.push({
+      el,
+      x: Math.random() * (window.innerWidth - 120),
+      y: Math.random() * (window.innerHeight - 80),
+      vx: (Math.random() * 1.5 + 0.8) * (Math.random()>0.5?1:-1),
+      vy: (Math.random() * 1.5 + 0.8) * (Math.random()>0.5?1:-1),
+    });
+  });
+
+  // Add tagline
+  const tag = document.createElement('div');
+  tag.className = 'ss-tagline';
+  tag.textContent = 'sm-portal · personal growth os · 2026';
+  tag.style.bottom = '60px';
+  tag.style.left = '50%';
+  tag.style.transform = 'translateX(-50%)';
+  ss.appendChild(tag);
+
+  animateScreensaver();
+}
+
+function animateScreensaver(){
+  const ss = document.getElementById('screensaver');
+  if(!ss.classList.contains('active')) return;
+  ssBalls.forEach(b => {
+    b.x += b.vx;
+    b.y += b.vy;
+    const w = b.el.offsetWidth || 80;
+    const h = b.el.offsetHeight || 50;
+    if(b.x <= 0){ b.x = 0; b.vx = Math.abs(b.vx); }
+    if(b.x >= window.innerWidth - w){ b.x = window.innerWidth - w; b.vx = -Math.abs(b.vx); }
+    if(b.y <= 0){ b.y = 0; b.vy = Math.abs(b.vy); }
+    if(b.y >= window.innerHeight - h){ b.y = window.innerHeight - h; b.vy = -Math.abs(b.vy); }
+    b.el.style.left = b.x + 'px';
+    b.el.style.top = b.y + 'px';
+  });
+  requestAnimationFrame(animateScreensaver);
+}
+
+function dismissScreensaver(){
+  const ss = document.getElementById('screensaver');
+  ss.classList.remove('active');
+  ssBalls = [];
+  resetSSTimer();
+}
+
+// Start idle timer on user activity
+['mousemove','keydown','mousedown','touchstart','scroll'].forEach(ev =>
+  document.addEventListener(ev, resetSSTimer, {passive:true})
+);
+
+function toggleStartMenu(){ /* reserved for future Start menu */ }
 window.addEventListener('load',()=>{ const r=sessionStorage.getItem('sgp_role'); if(r)doLogin(r); });
 
 // ── CLOCK ──
