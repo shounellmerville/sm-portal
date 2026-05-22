@@ -36,6 +36,8 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
+html, body { overflow-x: hidden; }
+
 body {
   font-family: 'Share Tech Mono', monospace;
   background-color: var(--bg);
@@ -335,9 +337,9 @@ body[data-role="mentor"] .mentor-only { display: block; }
 .readme-body { padding: 12px 16px; font-size: 0.66rem; color: var(--text-soft); line-height: 1.8; letter-spacing: 0.04em; }
 
 /* Scrolling marquee */
-.marquee-window { margin-bottom: 12px; overflow: hidden; }
-.marquee-body { padding: 12px 0; display: flex; align-items: center; gap: 0; white-space: nowrap; overflow: hidden; }
-.marquee-inner { display: flex; gap: 40px; animation: marquee 22s linear infinite; }
+.marquee-window { margin-bottom: 12px; overflow: hidden; max-width: 100%; }
+.marquee-body { padding: 12px 0; display: flex; align-items: center; white-space: nowrap; overflow: hidden; width: 100%; }
+.marquee-inner { display: flex; gap: 40px; animation: marquee 22s linear infinite; flex-shrink: 0; }
 .marquee-inner:hover { animation-play-state: paused; }
 @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 .marquee-item { font-size: 0.65rem; color: var(--terra); letter-spacing: 0.1em; font-weight: 700; text-transform: uppercase; }
