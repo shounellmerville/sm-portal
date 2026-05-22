@@ -313,10 +313,10 @@ body.editing .g-slider { display: block; }
 .thread-title { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 6px; font-weight: 700; }
 .t-msg { padding: 8px 10px; margin-bottom: 4px; font-size: 0.65rem; line-height: 1.6; max-width: 90%; }
 .t-msg.from-me { background: var(--win-bg); border: 1px solid var(--border); }
-.t-msg.from-charlotte { background: rgba(74,124,107,0.1); border: 1px solid rgba(74,124,107,0.25); margin-left: auto; }
+.t-msg.from-mentor { background: rgba(74,124,107,0.1); border: 1px solid rgba(74,124,107,0.25); margin-left: auto; }
 .t-author { font-size: 0.56rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
 .auth-me { color: var(--terra); }
-.auth-charlotte { color: var(--sage); }
+.auth-mentor { color: var(--sage); }
 .t-time { font-size: 0.56rem; color: var(--text-soft); margin-top: 2px; }
 .t-del { background: none; border: none; color: var(--border); cursor: pointer; font-size: 10px; float: right; }
 .t-del:hover { color: var(--terra); }
@@ -383,36 +383,60 @@ body[data-role="mentor"] .mentor-only { display: block; }
 /* GATE */
 #gate {
   position: fixed; inset: 0; z-index: 9999;
-  background: var(--bg);
-  background-image: radial-gradient(circle, var(--dot) 1px, transparent 1px);
-  background-size: 20px 20px;
-  display: flex; align-items: center; justify-content: center;
+  background: var(--mocha);
+  background-image: radial-gradient(circle, rgba(201,123,90,0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+  gap: 16px;
 }
-.gate-win { width: 360px; max-width: 92vw; }
-.gate-body { padding: 20px; background: var(--cream); }
-.gate-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-style: italic; color: var(--mocha); margin-bottom: 2px; }
-.gate-sub { font-size: 0.6rem; color: var(--text-soft); letter-spacing: 0.1em; margin-bottom: 18px; }
-.gate-who { display: flex; gap: 6px; margin-bottom: 14px; }
+.gate-eyebrow {
+  font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(253,246,238,0.35); text-align: center;
+}
+.gate-win { width: 380px; max-width: 94vw; }
+.gate-body { padding: 26px 24px 22px; background: var(--cream); }
+.gate-logo {
+  font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-style: italic;
+  color: var(--mocha); margin-bottom: 2px; line-height: 1.1;
+}
+.gate-logo span { color: var(--terra); }
+.gate-sub { font-size: 0.58rem; color: var(--text-soft); letter-spacing: 0.12em; margin-bottom: 22px; text-transform: uppercase; }
+.gate-divider { height: 1px; background: var(--border); margin-bottom: 18px; }
+.gate-who { display: flex; gap: 6px; margin-bottom: 16px; }
 .gate-who-btn {
-  flex: 1; padding: 6px; font-family: 'Share Tech Mono', monospace; font-size: 0.65rem;
+  flex: 1; padding: 8px 6px; font-family: 'Share Tech Mono', monospace; font-size: 0.64rem;
   color: var(--text-soft); cursor: pointer; letter-spacing: 0.04em; text-align: center;
-  background: var(--win-bg); border: 1px solid var(--border);
+  background: var(--win-bg); border: 1px solid var(--border); transition: all 0.15s;
 }
+.gate-who-btn:hover { border-color: var(--terra); color: var(--terra); }
 .gate-who-btn.sel { background: var(--terra); border-color: var(--terra); color: var(--cream); }
-.gate-lbl { font-size: 0.6rem; color: var(--text-soft); letter-spacing: 0.08em; margin-bottom: 5px; }
+.gate-lbl { font-size: 0.58rem; color: var(--text-soft); letter-spacing: 0.1em; margin-bottom: 6px; text-transform: uppercase; }
 .gate-inp {
-  width: 100%; padding: 8px 10px; border: 1px solid var(--border); background: var(--win-bg);
-  font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; color: var(--mocha);
-  letter-spacing: 0.1em; outline: none;
+  width: 100%; padding: 10px 12px; border: 1px solid var(--border); background: var(--win-bg);
+  font-family: 'Share Tech Mono', monospace; font-size: 0.82rem; color: var(--mocha);
+  letter-spacing: 0.12em; outline: none; transition: border-color 0.15s;
 }
-.gate-inp:focus { border-color: var(--terra); }
+.gate-inp:focus { border-color: var(--terra); background: var(--cream); }
 .gate-go {
-  width: 100%; margin-top: 12px; padding: 10px;
+  width: 100%; margin-top: 14px; padding: 12px;
   background: var(--terra); border: none; color: var(--cream);
   font-family: 'Share Tech Mono', monospace; font-size: 0.72rem;
-  cursor: pointer; letter-spacing: 0.08em; font-weight: 700;
+  cursor: pointer; letter-spacing: 0.1em; font-weight: 700;
+  border-top: 2px solid var(--bevel-light);
+  border-left: 2px solid var(--bevel-light);
+  border-right: 2px solid var(--bevel-dark);
+  border-bottom: 2px solid var(--bevel-dark);
+  transition: opacity 0.15s;
 }
-.gate-err { font-size: 0.62rem; color: #b03030; margin-top: 6px; min-height: 16px; letter-spacing: 0.04em; }
+.gate-go:hover { opacity: 0.9; }
+.gate-go:active {
+  border-top: 2px solid var(--bevel-dark);
+  border-left: 2px solid var(--bevel-dark);
+  border-right: 2px solid var(--bevel-light);
+  border-bottom: 2px solid var(--bevel-light);
+}
+.gate-err { font-size: 0.62rem; color: #c04040; margin-top: 8px; min-height: 16px; letter-spacing: 0.04em; }
+.gate-footer { font-size: 0.55rem; color: rgba(253,246,238,0.25); letter-spacing: 0.1em; text-align: center; }
 
 /* Toast */
 .toast { position: fixed; bottom: 60px; right: 14px; background: var(--sage); color: white; padding: 6px 14px; font-size: 0.62rem; letter-spacing: 0.08em; z-index: 600; opacity: 0; transform: translateY(4px); transition: all 0.25s; pointer-events: none; }
@@ -468,18 +492,21 @@ body[data-role="mentor"] .mentor-only { display: block; }
       <span class="menu-item">File</span><span class="menu-item">Edit</span><span class="menu-item">Help</span>
     </div>
     <div class="gate-body">
-      <div class="gate-logo">Shounell Merville</div>
+      <div class="gate-logo"><span>Shounell</span> Merville</div>
       <div class="gate-sub">Personal Growth Portal · 2026</div>
+      <div class="gate-divider"></div>
+      <div class="gate-lbl">Who are you?</div>
       <div class="gate-who">
         <button class="gate-who-btn sel" id="gbtn-owner" onclick="selectRole('owner')">👤 Shounell</button>
-        <button class="gate-who-btn" id="gbtn-mentor" onclick="selectRole('mentor')">🌿 Charlotte</button>
+        <button class="gate-who-btn" id="gbtn-mentor" onclick="selectRole('mentor')">🌿 Mentor</button>
       </div>
       <div class="gate-lbl">Password</div>
-      <input class="gate-inp" id="gate-pw" type="password" placeholder="enter password" onkeydown="if(event.key==='Enter')tryLogin()"/>
-      <button class="gate-go" onclick="tryLogin()">Login →</button>
+      <input class="gate-inp" id="gate-pw" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')tryLogin()"/>
+      <button class="gate-go" onclick="tryLogin()">Enter Portal →</button>
       <div class="gate-err" id="gate-err"></div>
     </div>
   </div>
+  <div class="gate-footer">sm-portal · private access only</div>
 </div>
 
 <!-- MAIN -->
@@ -979,8 +1006,8 @@ async function renderCoaching(){
       </div>`)
       .join(''):'<div class="no-items">No action items yet.</div>';
     const msgs=c.thread.length?c.thread.map((m,mi)=>`
-      <div class="t-msg ${m.role==='mentor'?'from-charlotte':'from-me'}">
-        <div class="t-author ${m.role==='mentor'?'auth-charlotte':'auth-me'}">${m.role==='mentor'?'Mentor':'Shounell'}</div>
+      <div class="t-msg ${m.role==='mentor'?'from-mentor':'from-me'}">
+        <div class="t-author ${m.role==='mentor'?'auth-mentor':'auth-me'}">${m.role==='mentor'?'Mentor':'Shounell'}</div>
         ${m.text}<div class="t-time">${m.time}</div>
         <button class="t-del" onclick="delM('${sec.id}',${mi})">×</button>
       </div>`).join(''):'<div class="no-msgs">Start the conversation.</div>';
@@ -1010,7 +1037,7 @@ async function renderCoaching(){
 }
 
 async function setR(id,n){ const d=await gcGet(id);d.rating=n;await gcSet(id,d);renderCoaching(); }
-async function addA(id){ const i=document.getElementById('ai-'+id);const t=i.value.trim();if(!t)return;const d=await gcGet(id);d.actions.push({text:t,done:false,by:'Charlotte',date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});await gcSet(id,d);renderCoaching(); }
+async function addA(id){ const i=document.getElementById('ai-'+id);const t=i.value.trim();if(!t)return;const d=await gcGet(id);d.actions.push({text:t,done:false,by:'Mentor',date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});await gcSet(id,d);renderCoaching(); }
 async function togA(id,ai){ const d=await gcGet(id);d.actions[ai].done=!d.actions[ai].done;await gcSet(id,d);renderCoaching(); }
 async function delA(id,ai){ const d=await gcGet(id);d.actions.splice(ai,1);await gcSet(id,d);renderCoaching(); }
 async function sendM(id){ const i=document.getElementById('ti-'+id);const t=i.value.trim();if(!t)return;const d=await gcGet(id);d.thread.push({role:document.body.dataset.role,text:t,time:new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})});await gcSet(id,d);i.value='';renderCoaching(); }
